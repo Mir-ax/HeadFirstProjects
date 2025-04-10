@@ -17,13 +17,31 @@ namespace MatchGame;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private DispatcherTimer _timer = new DispatcherTimer();
+    private int _tenthsOfSecondsElapsed;
+    private int _matchesFound;
     private TextBlock _lastClickedTextBlock;
     private bool _findingMatch = false;
 
     public MainWindow()
     {
         InitializeComponent();
+        _timer.Interval = TimeSpan.FromSeconds(1);
+        _timer.Tick += _timer_Tick;
         SetUpGame();
+    }
+
+    private void _timer_Tick(object? sender, EventArgs e)
+    {
+        
+
+        _tenthsOfSecondsElapsed++;
+        TimeTextBlock.Text = (_tenthsOfSecondsElapsed / 10F).ToString("0.0s");
+        if (_matchesFound == 8)
+        {
+            _timer.Stop();
+            TimeTextBlock.Text = TimeTextBlock.Text + " - Play again?";
+        }
     }
 
     private void SetUpGame()
@@ -44,11 +62,17 @@ public partial class MainWindow : Window
 
         foreach (var textBlock in mainGrid.Children.OfType<TextBlock>())
         {
-            var index = random.Next(animalEmoji.Count);
-            textBlock.Text = animalEmoji[index];
-            animalEmoji.RemoveAt(index);
-
+            if (textBlock.Name != "TimeTextBlock")
+            {
+                var index = random.Next(animalEmoji.Count);
+                textBlock.Text = animalEmoji[index];
+                animalEmoji.RemoveAt(index);
+            }
         }
+
+        _timer.Start();
+        _tenthsOfSecondsElapsed = 0;
+        _matchesFound = 0;
     }
 
     private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
@@ -63,6 +87,7 @@ public partial class MainWindow : Window
         }
         else if (textBlock.Text == _lastClickedTextBlock.Text)
         {
+            _matchesFound++;
             textBlock.Visibility = Visibility.Hidden;
             _findingMatch = false;
         }
@@ -70,6 +95,14 @@ public partial class MainWindow : Window
         {
             _lastClickedTextBlock.Visibility = Visibility.Visible;
             _findingMatch = false;
+        }
+    }
+
+    private void TimeTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (_matchesFound == 8)
+        {
+            SetUpGame();
         }
     }
 }
