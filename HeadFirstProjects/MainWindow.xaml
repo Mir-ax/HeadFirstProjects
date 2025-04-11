@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MatchGame"
         mc:Ignorable="d"
-        Title="Find all of the matching animals:" Width="400" Height="450">
+        Title="Find all of the matching animals:" Width="400" Height="550">
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -39,6 +40,10 @@
         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown"/>
         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown"/>
         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Grid.Row="3" TextWrapping="Wrap" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TextBlock_MouseDown"/>
-        <TextBlock x:Name="TimeTextBlock" HorizontalAlignment="Center" Grid.Row="4" TextWrapping="Wrap" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TimeTextBlock_MouseDown" Grid.ColumnSpan="4"/>
+
+        <TextBlock x:Name="TimeTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="?" VerticalAlignment="Center" FontSize="36" MouseDown="TimeTextBlock_MouseDown" Grid.Row="4" Grid.Column="1"/>
+        <TextBlock x:Name="MessageTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="?" VerticalAlignment="Center" FontSize="20" Grid.ColumnSpan="2" Grid.Row="4" Grid.Column="3" TextAlignment="Center"/>
+
+        <TextBlock x:Name="ScoreBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" FontSize="36" Grid.ColumnSpan="2" Grid.Row="5" Grid.Column="1"/>
     </Grid>
 </Window>

@@ -22,18 +22,32 @@ public partial class MainWindow : Window
     private int _matchesFound;
     private TextBlock _lastClickedTextBlock;
     private bool _findingMatch = false;
+    private int _score = 0;
+
+    public int Score
+    {
+        get { return _score; }
+        set
+        {
+            _score = value;
+            ScoreBlock.Text = Convert.ToString(_score);
+        }
+    }
+
 
     public MainWindow()
     {
         InitializeComponent();
         _timer.Interval = TimeSpan.FromSeconds(1);
-        _timer.Tick += _timer_Tick;
+        _timer.Tick += TimerTick;
+        _timer.Start();
         SetUpGame();
     }
 
-    private void _timer_Tick(object? sender, EventArgs e)
+    private void TimerTick(object? sender, EventArgs e)
     {
-        
+        MessageTextBlock.Foreground = Brushes.Black;
+        MessageTextBlock.Text = "Find the match";
 
         _tenthsOfSecondsElapsed++;
         TimeTextBlock.Text = (_tenthsOfSecondsElapsed / 10F).ToString("0.0s");
@@ -60,14 +74,15 @@ public partial class MainWindow : Window
             "🥚","🥚"
         };
 
+
         foreach (var textBlock in mainGrid.Children.OfType<TextBlock>())
         {
-            if (textBlock.Name != "TimeTextBlock")
-            {
-                var index = random.Next(animalEmoji.Count);
-                textBlock.Text = animalEmoji[index];
-                animalEmoji.RemoveAt(index);
-            }
+            if (mainGrid.Children.IndexOf(textBlock) == 16)
+                break;
+
+            var index = random.Next(animalEmoji.Count);
+            textBlock.Text = animalEmoji[index];
+            animalEmoji.RemoveAt(index);
         }
 
         _timer.Start();
@@ -87,14 +102,20 @@ public partial class MainWindow : Window
         }
         else if (textBlock.Text == _lastClickedTextBlock.Text)
         {
+            MessageTextBlock.Foreground = Brushes.Green;
+            MessageTextBlock.Text = "Correct!";
             _matchesFound++;
             textBlock.Visibility = Visibility.Hidden;
             _findingMatch = false;
+            Score += 2;
         }
         else
         {
+            MessageTextBlock.Foreground = Brushes.Red;
+            MessageTextBlock.Text = "Wrong!";
             _lastClickedTextBlock.Visibility = Visibility.Visible;
             _findingMatch = false;
+            Score--;
         }
     }
 
