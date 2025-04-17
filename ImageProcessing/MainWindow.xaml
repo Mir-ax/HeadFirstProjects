@@ -7,6 +7,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <DockPanel LastChildFill="True">
+            <Menu Height="25" DockPanel.Dock="Top" FontWeight="Bold" BorderThickness="1" BorderBrush="Black">
+                <MenuItem Header="File">
+                    <MenuItem Header="Open" Click="MenuItem_Click" ></MenuItem>
+                </MenuItem>
+            </Menu>
+            <ScrollBar DockPanel.Dock="Right" BorderThickness="1" BorderBrush="Black"/>
+            <Image x:Name="imageBox"/>
+        </DockPanel>
     </Grid>
 </Window>

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchGame", "MatchGame.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp", "..\TodoApp\TodoApp.csproj", "{A0FC7511-A0BD-48A9-8668-C1B185AE5118}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessing", "..\ImageProcessing\ImageProcessing.csproj", "{A064F6A4-168F-0F9D-8C30-5FB52DA64CEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A0FC7511-A0BD-48A9-8668-C1B185AE5118}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0FC7511-A0BD-48A9-8668-C1B185AE5118}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0FC7511-A0BD-48A9-8668-C1B185AE5118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A064F6A4-168F-0F9D-8C30-5FB52DA64CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A064F6A4-168F-0F9D-8C30-5FB52DA64CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A064F6A4-168F-0F9D-8C30-5FB52DA64CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A064F6A4-168F-0F9D-8C30-5FB52DA64CEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,4 +20,22 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
+
+    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    {
+
+        var dialog = new Microsoft.Win32.OpenFileDialog();
+        dialog.FileName = "Image"; // Default file name
+        dialog.DefaultExt = ".png"; // Default file extension
+        dialog.Filter = "Image file|*.png; *.jpg; *.bmp"; // Filter files by extension
+
+        bool? result = dialog.ShowDialog();
+
+        if (result == true)
+        {
+            imageBox.Source = new BitmapImage(new Uri(dialog.FileName));
+        }
+
+    }
+
 }
