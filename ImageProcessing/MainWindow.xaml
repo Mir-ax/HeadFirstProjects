@@ -9,7 +9,7 @@
     <Grid>
         <DockPanel LastChildFill="True">
             <Menu Height="25" DockPanel.Dock="Top" FontWeight="Bold" BorderThickness="1" BorderBrush="Black">
-                <MenuItem Header="File">
+                <MenuItem x:Name="menuFile" Header="File">
                     <MenuItem Header="Open" Click="MenuItem_Click" ></MenuItem>
                 </MenuItem>
             </Menu>

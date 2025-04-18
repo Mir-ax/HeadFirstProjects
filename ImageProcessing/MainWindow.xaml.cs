@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System.Windows.Controls.Primitives;
 
 namespace ImageProcessing;
 
@@ -27,10 +28,10 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    private async void MenuItem_Click(object sender, RoutedEventArgs e)
     {
         _bitmaps.Clear();
-
+        menuFile.IsEnabled = scrollBar.IsEnabled = false;
         var dialog = new OpenFileDialog();
         dialog.FileName = "Image"; // Default file name
         dialog.DefaultExt = ".png"; // Default file extension
@@ -41,8 +42,9 @@ public partial class MainWindow : Window
         if (result == true)
         {
             var bitmap = new Bitmap(dialog.FileName);
-            ImageProcessing(bitmap);
+            await Task.Run(() => { ImageProcessing(bitmap); });
         }
+        menuFile.IsEnabled = scrollBar.IsEnabled = true;
     }
 
     private void ImageProcessing(Bitmap bitmap)
@@ -53,8 +55,7 @@ public partial class MainWindow : Window
         var newBitmap = new Bitmap(bitmap.Width, bitmap.Height);
         _bitmaps.Add(newBitmap);
 
-
-        for (int i = 1; i < scrollBar.Maximum; i++)
+        for (int i = 1; i <100; i++)
         {
             for (int j = 0; j < pixelsInStep; j++)
             {
@@ -66,14 +67,15 @@ public partial class MainWindow : Window
             newBitmap = new Bitmap(bitmap.Width, bitmap.Height);
 
             foreach (var pixel in currentPixelsSet)
-            {    
+            {
                 newBitmap.SetPixel(pixel.Point.X, pixel.Point.Y, pixel.Color);
             }
             _bitmaps.Add(newBitmap);
-            Title = i + "%";
+            this.Dispatcher.Invoke(() =>
+            {
+                Title = i + "%";
+            });
         }
-
-        Title = "Success!";
         _bitmaps.Add(bitmap);
     }
 
