@@ -41,10 +41,11 @@ public partial class MainWindow : Window
 
         if (result == true)
         {
-            var bitmap = new Bitmap(dialog.FileName);
+            var bitmap = new Bitmap(System.Drawing.Image.FromFile(dialog.FileName), 800,480);
             await Task.Run(() => { ImageProcessing(bitmap); });
         }
-        menuFile.IsEnabled = scrollBar.IsEnabled = true;
+        Title = "Success!";
+        menuFile.IsEnabled = scrollBar.IsEnabled = true; 
     }
 
     private void ImageProcessing(Bitmap bitmap)

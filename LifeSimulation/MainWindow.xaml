@@ -1,0 +1,31 @@
+﻿<Window x:Class="LifeSimulation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LifeSimulation"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" WindowState="Maximized">
+    <Grid x:Name="grid" Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1"/>
+
+        <StackPanel Grid.Column="0" Margin="5">
+            <Label Content="Resolution" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
+            <xctk:IntegerUpDown x:Name="udcResolution" Maximum="25" Minimum="2" />
+            <Label Content="Density"  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
+            <xctk:IntegerUpDown Name="udcDensity" Minimum="2" />
+            <Button x:Name="bStart" Content="Start" Height="31" Width="66" FontSize="16" FontWeight="Bold" Margin="0,10,0,10" Click="bStart_Click"/>
+            <Button x:Name="bStop" Content="Stop" Height="31" Width="66" FontSize="16" FontWeight="Bold" Click="bStop_Click"/>
+        </StackPanel>
+
+
+        <Border Grid.Column="1" Name="border" BorderThickness="1" BorderBrush="Black">
+            <Image Name="myImage"/>
+        </Border>
+    </Grid>
+</Window>
