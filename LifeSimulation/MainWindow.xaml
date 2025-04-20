@@ -18,14 +18,14 @@
             <Label Content="Resolution" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
             <xctk:IntegerUpDown x:Name="udcResolution" Maximum="25" Minimum="2" />
             <Label Content="Density"  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
-            <xctk:IntegerUpDown Name="udcDensity" Minimum="2" />
+            <xctk:IntegerUpDown Name="udcDensity" Minimum="2" Maximum="25" />
             <Button x:Name="bStart" Content="Start" Height="31" Width="66" FontSize="16" FontWeight="Bold" Margin="0,10,0,10" Click="bStart_Click"/>
             <Button x:Name="bStop" Content="Stop" Height="31" Width="66" FontSize="16" FontWeight="Bold" Click="bStop_Click"/>
         </StackPanel>
 
 
         <Border Grid.Column="1" Name="border" BorderThickness="1" BorderBrush="Black">
-            <Image Name="myImage"/>
+            <Image Name="myImage" MouseMove="myImage_MouseMove"/>
         </Border>
     </Grid>
 </Window>

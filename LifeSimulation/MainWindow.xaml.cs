@@ -1,18 +1,9 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-//using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-//using System.Windows.Shapes;
-using System;
 using System.Windows.Threading;
 using System.Drawing;
 using System.IO;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LifeSimulation;
 
@@ -25,10 +16,8 @@ public partial class MainWindow : Window
     private Graphics _graphics;
     private DispatcherTimer _dispatcherTimer = new DispatcherTimer();
     private int _resolution;
-    private bool[,] _field;
-    private int _rows;
-    private int _cols;
-    private int _countGeneration = 0;
+
+    private GameEngine _gameEngine;
 
     public MainWindow()
     {
@@ -38,7 +27,7 @@ public partial class MainWindow : Window
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         udcResolution.Value = 3;
-        udcDensity.Value = 2;
+        udcDensity.Value = 25;
 
         _dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
         _dispatcherTimer.Interval = new TimeSpan(100);
@@ -46,80 +35,40 @@ public partial class MainWindow : Window
 
     public void GameStart()
     {
-        _bitmap = new Bitmap((int)border.ActualWidth, (int)border.ActualHeight);
-        _graphics = Graphics.FromImage(_bitmap);
-
         _resolution = (int)udcResolution.Value;
         udcResolution.IsEnabled = udcDensity.IsEnabled = bStart.IsEnabled = false;
 
-        _rows = (int)border.ActualHeight / _resolution;
-        _cols = (int)border.ActualWidth / _resolution;
+        _bitmap = new Bitmap((int)border.ActualWidth, (int)border.ActualHeight);
+        _graphics = Graphics.FromImage(_bitmap);
 
-        _field = new bool[_cols, _rows];
+        _gameEngine = new GameEngine
+        (
+            rows: (int)border.ActualHeight / _resolution,
+            cols: (int)border.ActualWidth / _resolution,
+            density: (int)(udcDensity.Minimum + udcDensity.Maximum - udcDensity.Value)
+        );
 
-        Random random = new Random();
-
-        for (int x = 0; x < _cols; x++)
-        {
-            for (int y = 0; y < _rows; y++)
-            {
-                _field[x, y] = random.Next((int)udcDensity.Value) == 0;
-            }
-        }
-
-        _countGeneration = 0;
         _dispatcherTimer.Start();
     }
 
     private void NextGeneration()
     {
-        var newField = new bool[_cols, _rows];
         _graphics.Clear(Color.Black);
 
-        for (int x = 0; x < _cols; x++)
+        var field = _gameEngine.GetCurrentField();
+        for (int x = 0; x < field.GetLength(0); x++)
         {
-            for (int y = 0; y < _rows; y++)
+            for (int y = 0; y < field.GetLength(1); y++)
             {
-                var neighbours = CountNeighbours(x, y);
-                var isLive = _field[x, y];
-
-                if (!isLive && neighbours == 3)
-                    newField[x, y] = true;
-                else if (isLive && (neighbours > 3 || neighbours < 2))
-                    newField[x, y] = false;
-                else
-                    newField[x, y] = _field[x, y];
-
-                if (isLive)
-                    _graphics.FillRectangle(Brushes.Crimson, x * _resolution, y * _resolution, _resolution, _resolution);
+                if (field[x,y])
+                    _graphics.FillRectangle(Brushes.Crimson, x * _resolution, y * _resolution, _resolution - 1, _resolution - 1);
             }
         }
 
-        _field = newField;
         myImage.Source = BitmapToImageSource(_bitmap);
-        Title = $"Generation: {++_countGeneration}";
-    }
+        Title = $"Generation: {_gameEngine.CountGeneration}";
 
-    private int CountNeighbours(int x, int y)
-    {
-        int count = 0;
-
-        for (int i = -1; i < 2; i++)
-        {
-            for (int j = -1; j < 2; j++)
-            {
-                var col = (x + i + _cols) % _cols;
-                var row = (y + j + _rows) % _rows;
-
-                var isSelfChecking = col == x && row == y;
-                var isLive = _field[col, row];
-
-                if (isLive && !isSelfChecking)
-                    count++;
-            }
-        }
-
-        return count;
+        _gameEngine.NextGeneration();
     }
 
     private void bStart_Click(object sender, RoutedEventArgs e)
@@ -151,6 +100,21 @@ public partial class MainWindow : Window
 
             return bitmapimage;
         }
+    }
+
+    private void myImage_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (_dispatcherTimer.IsEnabled == false)
+            return;
+
+        var x = (int)e.GetPosition(myImage).X / _resolution;
+        var y = (int)e.GetPosition(myImage).Y / _resolution;
+
+        if (e.LeftButton == MouseButtonState.Pressed)
+            _gameEngine.AddCell(x, y, true);
+
+        if (e.RightButton == MouseButtonState.Pressed)
+            _gameEngine.RemoveCell(x, y, false);
     }
 }
 
